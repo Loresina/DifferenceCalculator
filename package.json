@@ -7,6 +7,12 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
+ "simple-git-hooks": {
+    "pre-push": "make lint"
+  },
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "test": "jest"
   },
