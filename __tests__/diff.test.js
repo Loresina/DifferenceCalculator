@@ -3,23 +3,34 @@ import { expect, test } from '@jest/globals';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { compareFiles } from '../src/diff.js';
+import yaml from 'js-yaml';
+import { compareObjects } from '../src/diff.js';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-const getFileToPuth = (puth) => {
-  const fileToPuth = fs.readFileSync(`${dirname}${puth}`);
-  const fileToObject = JSON.parse(fileToPuth);
-
-  return fileToObject;
+const getFileFromPath = (filePath) => {
+  const fileFromPath = fs.readFileSync(`${dirname}${filePath}`);
+  if (path.extname(filePath) === '.json') {
+    const fileToObject = JSON.parse(fileFromPath);
+    return fileToObject;
+  } if (path.extname(filePath) === '.yml' || path.extname(filePath) === '.yaml') {
+    const fileToObject = yaml.load(fileFromPath);
+    return fileToObject;
+  }
+  return String(fileFromPath);
 };
 
-const file1 = getFileToPuth('/../__fixtures__/file1.json');
-const file2 = getFileToPuth('/../__fixtures__/file2.json');
-const solution = getFileToPuth('/../__fixtures__/solution.json');
+const file1JSON = getFileFromPath('/../__fixtures__/file1.json');
+const file2JSON = getFileFromPath('/../__fixtures__/file2.json');
+const file1Yml = getFileFromPath('/../__fixtures__/file1.yml');
+const file2Yml = getFileFromPath('/../__fixtures__/file2.yml');
+const solution = getFileFromPath('/../__fixtures__/solution');
 
-test('compareFiles', () => {
-  const solutionJson = JSON.stringify(solution, null, ' ');
-  expect(compareFiles(file1, file2)).toEqual(solutionJson);
+test('compareFilesJSON', () => {
+  expect(compareObjects(file1JSON, file2JSON)).toBe(solution);
+});
+
+test('compareFilesYml', () => {
+  expect(compareObjects(file1Yml, file2Yml)).toBe(solution);
 });
