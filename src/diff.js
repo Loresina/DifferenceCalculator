@@ -1,15 +1,16 @@
 import fs from 'fs';
 import _ from 'lodash';
+import path from 'path';
+import { cwd } from 'node:process';
 
-const compareFiles = (file1, file2) => {
+const compareFiles = (fileObject1, fileObject2) => {
   const result = {};
-  const fileObject1 = JSON.parse(file1);
-  const fileObject2 = JSON.parse(file2);
   const keys1 = _.sortBy(Object.keys(fileObject1));
   const keys2 = _.sortBy(Object.keys(fileObject2));
   const keys = [...keys1, ...keys2];
 
-  for (const key of keys) {
+  for (let i = 0; i < keys.length; i += 1) {
+    const key = keys[i];
     if (!Object.hasOwn(fileObject1, key)) {
       const keyAdd = `+ ${key}`;
       result[keyAdd] = fileObject2[key];
@@ -29,13 +30,23 @@ const compareFiles = (file1, file2) => {
   return JSON.stringify(result, null, ' ');
 };
 
-const genDiff = (filePath1, filePath2) => {
-  const file1 = fs.readFileSync(filePath1);
-  const file2 = fs.readFileSync(filePath2);
-
-  console.log('Hello');
-  console.log(compareFiles(file1, file2));
+const getFileToPuth = (puth) => {
+  const currentDirectory = cwd();
+  const fileToPuth = fs.readFileSync(path.resolve(currentDirectory, puth));
+  const fileToObject = JSON.parse(fileToPuth);
+  return fileToObject;
 };
+
+const genDiff = (filePath1, filePath2) => {
+  const fileObject1 = getFileToPuth(filePath1);
+  const fileObject2 = getFileToPuth(filePath2);
+
+  console.log(compareFiles(fileObject1, fileObject2));
+};
+
+const example = (string) => string;
+
+// console.log(example('hello'));
 
 // for example
 // const path1 = 'examples/file1.json';
@@ -43,4 +54,8 @@ const genDiff = (filePath1, filePath2) => {
 
 // genDiff(path1, path2);
 
-export default genDiff;
+// const currentDirectory = cwd();
+// console.log(currentDirectory);
+// console.log(path.resolve(currentDirectory, path1));
+
+export { genDiff, compareFiles, example };
