@@ -8,4 +8,4 @@
 <a href="https://codeclimate.com/github/Loresina/frontend-bootcamp-project-46/test_coverage"><img src="https://api.codeclimate.com/v1/badges/84324e1a6b0c4c311a45/test_coverage" /></a>
 
 ### Github Actions
-https://github.com/<Loresina>/frontend-bootcamp-project-46/actions/workflows/<main.yml>/badge.svg
+https://github.com/Loresina/frontend-bootcamp-project-46/actions/workflows/main.yml/badge.svg
