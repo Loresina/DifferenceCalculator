@@ -24,30 +24,32 @@ const stringify = (value, replacer = ' ', spacesCount = 1) => {
 };
 
 const compareObjects = (fileObject1, fileObject2) => {
-  const result = {};
+  const result = [];
   const keys1 = _.sortBy(Object.keys(fileObject1));
   const keys2 = _.sortBy(Object.keys(fileObject2));
   const keys = [...keys1, ...keys2];
 
   for (let i = 0; i < keys.length; i += 1) {
-    const key = keys[i];
-    if (!Object.hasOwn(fileObject1, key)) {
-      const keyAdd = `+ ${key}`;
-      result[keyAdd] = fileObject2[key];
-    } else if (!Object.hasOwn(fileObject2, key)) {
-      const keyAdd = `- ${key}`;
-      result[keyAdd] = fileObject1[key];
-    } else if (fileObject1[key] === fileObject2[key]) {
-      const keyAdd = `  ${key}`;
-      result[keyAdd] = fileObject2[key];
+    const theKey = keys[i];
+    if (!Object.hasOwn(fileObject1, theKey)) {
+      const theValue = fileObject2[theKey];
+      result.push({ statust: 'added', key: theKey, value: theValue });
+    } else if (!Object.hasOwn(fileObject2, theKey)) {
+      const theValue = fileObject1[theKey];
+      result.push({ statust: 'deleted', key: theKey, value: theValue });
+    } else if (fileObject1[theKey] === fileObject2[theKey]) {
+      const theValue = fileObject2[theKey];
+      result.push({ statust: 'unchanged', key: theKey, value: theValue });
     } else {
-      const keyAdd1 = `- ${key}`;
-      const keyAdd2 = `+ ${key}`;
-      result[keyAdd1] = fileObject1[key];
-      result[keyAdd2] = fileObject2[key];
+      const theValue1 = fileObject1[theKey];
+      const theValue2 = fileObject2[theKey];
+      result.push({
+        statust: 'changed', key: theKey, value1: theValue1, value2: theValue2,
+      });
     }
   }
-  return stringify(result, ' ', 2);
+  const uniqueResult = _.uniqBy(result, (obj) => obj.key);
+  return console.log(uniqueResult);
 };
 
 const getFullPath = (filePath) => {
