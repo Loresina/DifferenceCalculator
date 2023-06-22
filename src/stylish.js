@@ -38,6 +38,4 @@ const stylish = (sortedArray) => {
   return iter(sortedArray, 1);
 };
 
-console.log(stylishNested(example));
-
 export default stylish;
