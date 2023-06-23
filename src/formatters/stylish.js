@@ -32,8 +32,8 @@ const stylish = (sortedArray) => {
           return `${' '.repeat(1 + depth)}  ${dict.key}: ${iter((dict.value), depth + 4)}`;
       }
     });
-    const stringstylishArray = `{\n${stylishArray.join('\n')}\n${' '.repeat(depth - 1)}}`;
-    return stringstylishArray;
+    const stringStylishArray = `{\n${stylishArray.join('\n')}\n${' '.repeat(depth - 1)}}`;
+    return stringStylishArray;
   };
   return iter(sortedArray, 1);
 };
