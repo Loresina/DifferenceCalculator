@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "[![Actions Status](https://github.com/Loresina/frontend-bootcamp-project-46/workflows/hexlet-check/badge.svg)](https://github.com/Loresina/frontend-bootcamp-project-46/actions)",
-  "main": "diff.js",
+  "main": "src/diff.js",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
