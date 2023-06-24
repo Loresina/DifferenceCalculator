@@ -12,13 +12,11 @@ const compareObjects = (fileObject1, fileObject2) => {
     && _.isObject(theValue1) && _.isObject(theValue2)) {
       return { status: 'nested', key, value: compareObjects(theValue1, theValue2) };
     } if (!Object.hasOwn(fileObject1, key)) {
-      const theValue = fileObject2[key];
-      return { status: 'added', key, value: theValue };
+      return { status: 'added', key, value: theValue2 };
     } if (!Object.hasOwn(fileObject2, key)) {
-      const theValue = fileObject1[key];
-      return { status: 'deleted', key, value: theValue };
-    } if (fileObject1[key] === fileObject2[key]) {
-      const theValue = fileObject2[key];
+      return { status: 'deleted', key, value: theValue1 };
+    } if (theValue1 === theValue2) {
+      const theValue = theValue1;
       return { status: 'unchanged', key, value: theValue };
     }
     return {
