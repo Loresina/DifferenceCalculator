@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const checkValue = (theValue) => {
+const getValue = (theValue) => {
   if (_.isObject(theValue)) {
     return '[complex value]';
   }
@@ -13,13 +13,14 @@ const checkValue = (theValue) => {
 const plain = (sortedArray) => {
   const iter = (iterArray, keysList) => {
     const plainArray = iterArray.flatMap((dict) => {
+      const keyPuth = [...keysList, dict.key].join('.');
       switch (dict.status) {
         case 'deleted':
-          return `Property '${[...keysList, dict.key].join('.')}' was removed`;
+          return `Property '${keyPuth}' was removed`;
         case 'added':
-          return `Property '${[...keysList, dict.key].join('.')}' was added with value: ${(checkValue(dict.value))}`;
+          return `Property '${keyPuth}' was added with value: ${(getValue(dict.value))}`;
         case 'changed':
-          return `Property '${[...keysList, dict.key].join('.')}' was updated. From ${checkValue(dict.value1)} to ${checkValue(dict.value2)}`;
+          return `Property '${keyPuth}' was updated. From ${getValue(dict.value1)} to ${getValue(dict.value2)}`;
         case 'nested':
           return `${iter(dict.value, [...keysList, dict.key])}`;
         default:

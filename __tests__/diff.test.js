@@ -1,10 +1,10 @@
 // import __dirname from 'path';
-import { expect, test } from '@jest/globals';
+import { expect, describe, test } from '@jest/globals';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import yaml from 'js-yaml';
-import { genDiff } from '../src/diff.js';
+import genDiff from '../src/diff.js';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -21,32 +21,25 @@ const getFileFromPath = (filePath) => {
   return String(fileFromPath);
 };
 
+const file1JSON = '__fixtures__/file1.json';
+const file2JSON = '__fixtures__/file2.json';
+const file1YML = '__fixtures__/file1.yml';
+const file2YML = '__fixtures__/file2.yml';
+
 const solutionNested = getFileFromPath('/../__fixtures__/solutionNested');
 const solutionPlain = getFileFromPath('/../__fixtures__/solutionPlain');
 const solutionNestedJSON = getFileFromPath('/../__fixtures__/solutionNestedJSON.txt');
 
-test('nestedFilesJSON', () => {
-  expect(genDiff('__fixtures__/file1.json', '__fixtures__/file2.json')).toBe(solutionNested);
-});
+const cases = [[file1JSON, file2JSON, solutionNested, 'stylish'], [file1YML, file2YML, solutionNested, 'stylish'],
+  [file1JSON, file2JSON, solutionPlain, 'plain'], [file1YML, file2YML, solutionPlain, 'plain'],
+  [file1JSON, file2JSON, solutionNestedJSON, 'json'], [file1YML, file2YML, solutionNestedJSON, 'json']];
 
-test('nestedFilesYml', () => {
-  expect(genDiff('__fixtures__/file1.yml', '__fixtures__/file2.yml')).toBe(solutionNested);
-});
-
-test('plainFilesJSON', () => {
-  expect(genDiff('__fixtures__/file1.json', '__fixtures__/file2.json', 'plain')).toBe(solutionPlain);
-});
-
-test('plainFilesYml', () => {
-  expect(genDiff('__fixtures__/file1.yml', '__fixtures__/file2.yml', 'plain')).toBe(solutionPlain);
-});
-
-test('jsonFilesJSON', () => {
-  console.log(genDiff('__fixtures__/file1.json', '__fixtures__/file2.json', 'json'));
-  console.log(solutionNestedJSON);
-  expect(genDiff('__fixtures__/file1.json', '__fixtures__/file2.json', 'json')).toBe(solutionNestedJSON);
-});
-
-test('jsonFilesYML', () => {
-  expect(genDiff('__fixtures__/file1.yml', '__fixtures__/file2.yml', 'json')).toEqual(solutionNestedJSON);
+describe("'genDiff' utility", () => {
+  test.each(cases)(
+    'description',
+    (firstArg, secondArg, solution, format) => {
+      const result = genDiff(firstArg, secondArg, format);
+      expect(result).toBe(solution);
+    },
+  );
 });
