@@ -13,8 +13,8 @@
 ### Description
 
 **Difference calculator** is a program that determines the difference between two data structures.  
-*Supported different input formats: yaml, json  
-*Report generation: plain text, style and json  
+* Supported different input formats: yaml, json.  
+* Report generation: plain text, style and json.  
 
 ### Installation
 
@@ -25,7 +25,7 @@ The program works with relative and absolute paths to the file.
 
 ```
   $ make install
-  $ gendiff fileputh1, fileputh2
+  $ gendiff fileputh1 fileputh2
 ```
 
 ### How it work
