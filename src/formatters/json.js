@@ -1,3 +1,3 @@
-const json = (sortedArray) => JSON.stringify(sortedArray);
+const toJson = (sortedArray) => JSON.stringify(sortedArray);
 
-export default json;
+export default toJson;

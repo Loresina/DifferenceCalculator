@@ -16,7 +16,7 @@ const stylishNested = (dict, mainIndent) => {
   return iter(dict, mainIndent);
 };
 
-const stylish = (sortedArray) => {
+const toStylish = (sortedArray) => {
   const iter = (iterArray, depth) => {
     const stylishArray = iterArray.map((dict) => {
       const startIndent = ' '.repeat(1 + depth);
@@ -41,4 +41,4 @@ const stylish = (sortedArray) => {
   return iter(sortedArray, 1);
 };
 
-export default stylish;
+export default toStylish;

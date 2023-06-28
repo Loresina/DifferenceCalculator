@@ -6,21 +6,22 @@ const compareObjects = (fileObject1, fileObject2) => {
   const keys = _.uniq(_.sortBy([...keys1, ...keys2]));
 
   const comparedArray = keys.map((key) => {
-    const theValue1 = fileObject1[key];
-    const theValue2 = fileObject2[key];
-    if (Object.hasOwn(fileObject1, key) && Object.hasOwn(fileObject2, key)
-    && _.isObject(theValue1) && _.isObject(theValue2)) {
-      return { status: 'nested', key, value: compareObjects(theValue1, theValue2) };
-    } if (!Object.hasOwn(fileObject1, key)) {
-      return { status: 'added', key, value: theValue2 };
-    } if (!Object.hasOwn(fileObject2, key)) {
-      return { status: 'deleted', key, value: theValue1 };
-    } if (theValue1 === theValue2) {
-      const theValue = theValue1;
-      return { status: 'unchanged', key, value: theValue };
+    const valueFile1 = fileObject1[key];
+    const valueFile2 = fileObject2[key];
+    if (_.isObject(valueFile1) && _.isObject(valueFile2)) {
+      return { status: 'nested', key, value: compareObjects(valueFile1, valueFile2) };
+    }
+    if (!Object.hasOwn(fileObject1, key)) {
+      return { status: 'added', key, value: valueFile2 };
+    }
+    if (!Object.hasOwn(fileObject2, key)) {
+      return { status: 'deleted', key, value: valueFile1 };
+    }
+    if (valueFile1 === valueFile2) {
+      return { status: 'unchanged', key, value: valueFile1 };
     }
     return {
-      status: 'changed', key, value1: theValue1, value2: theValue2,
+      status: 'changed', key, value1: valueFile1, value2: valueFile2,
     };
   });
   return comparedArray;

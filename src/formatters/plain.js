@@ -10,7 +10,7 @@ const getValue = (theValue) => {
   return `${theValue}`;
 };
 
-const plain = (sortedArray) => {
+const toPlain = (sortedArray) => {
   const iter = (iterArray, keysList) => {
     const plainArray = iterArray.flatMap((dict) => {
       const keyPuth = [...keysList, dict.key].join('.');
@@ -32,4 +32,4 @@ const plain = (sortedArray) => {
   return iter(sortedArray, []);
 };
 
-export default plain;
+export default toPlain;
